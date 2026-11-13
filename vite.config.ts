@@ -1,7 +1,8 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import react from '@vitejs/plugin-react'
-import { defineConfig, type Plugin } from 'vite'
+import react from '@vitejs/plugin-react';
+import { type Plugin } from 'vite';
+import { defineConfig } from 'vitest/config';
 
 /** Repositório ArtGpv/anki-ai -> https://artgpv.github.io/anki-ai/ */
 const BASE = '/anki-ai/';
