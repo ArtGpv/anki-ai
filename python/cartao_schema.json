@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "cartao_schema.json",
+  "title": "ResultadoCartaoAnki",
+  "description": "Saída do Gemini para UM cartão Anki. Todos os campos devem estar presentes (null quando não se aplica). Baralho e tags NÃO fazem parte da saída: vêm do frontend. Textos usam apenas o HTML permitido na especificação (b, i, br, ul, li, destaque, anki-mathjax).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "status",
+    "mensagem",
+    "modelo",
+    "modelo_incerto",
+    "contexto",
+    "pergunta",
+    "observacao_pergunta",
+    "imagem_pergunta",
+    "itens",
+    "resposta",
+    "observacao_resposta",
+    "exemplo",
+    "imagem_resposta"
+  ],
+  "properties": {
+    "status": {
+      "type": "string",
+      "enum": [
+        "ok",
+        "separar_cartoes",
+        "entrada_insuficiente"
+      ],
+      "description": "ok: cartão gerado. separar_cartoes: o pedido exigiria mais de 5 itens no Modelo 2; todos os demais campos (exceto mensagem) ficam null. entrada_insuficiente: não dá para criar o cartão com a entrada recebida; explique em mensagem."
+    },
+    "mensagem": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Aviso ao usuário em português. null quando status = ok. Para separar_cartoes: pedir para dividir em mais cartões."
+    },
+    "modelo": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "definicao",
+        "definicoes_multiplas",
+        "demonstracao_pura",
+        "demonstracao_raciocinio",
+        null
+      ],
+      "description": "Modelo do cartão: definicao (Modelo 1), definicoes_multiplas (Modelo 2), demonstracao_pura (Modelo 3), demonstracao_raciocinio (Modelo 4). null se status != ok."
+    },
+    "modelo_incerto": {
+      "type": [
+        "boolean",
+        "null"
+      ],
+      "description": "true somente no Modo B, quando o modelo escolhido pelo usuário não combina com o Front escrito (o Back é escrito no modelo escolhido mesmo assim). false nos demais casos, inclusive no Modo A. null se status != ok."
+    },
+    "contexto": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Contextualização do tópico SEM vírgula final, ex.: 'Em estatística' ou 'No estudo de sinais e sistemas'. Modo A: use a tag informada como fonte principal. Modo B: só a frase de contexto que o usuário escreveu no início do texto (a tag não é usada). null se o tópico for genérico ou se não houver contexto escrito."
+    },
+    "pergunta": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Modo A: pergunta com inicial maiúscula (Modelos 1, 3 e 4) ou enunciado comum da lista, ex.: 'Defina o que são' (Modelo 2). Modo B: a redação e a caixa originais do usuário, sem a frase de contexto. Use verbos como Defina, Demonstre, Deduza. Fórmulas dentro de <anki-mathjax>. Obrigatório quando status = ok."
+    },
+    "observacao_pergunta": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Observação curta sobre termos não óbvios, condições da pergunta, formato de resposta ou ambiguidades. null se a pergunta for direta e sem ambiguidade."
+    },
+    "imagem_pergunta": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Descrição da imagem (sem colchetes), começando por 'Imagem de/da/do ...'. Só quando a pergunta depende fortemente da imagem; senão null."
+    },
+    "itens": {
+      "type": [
+        "array",
+        "null"
+      ],
+      "minItems": 2,
+      "maxItems": 5,
+      "description": "Somente no Modelo 2 (definicoes_multiplas): de 2 a 5 itens. Nos demais modelos, null.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "pergunta",
+          "rotulo",
+          "resposta",
+          "exemplo",
+          "imagem"
+        ],
+        "properties": {
+          "pergunta": {
+            "type": "string",
+            "description": "Item da lista exibida na pergunta (ex.: 'Causais'), sem pontuação final."
+          },
+          "rotulo": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Rótulo exibido em negrito antes da resposta (pode usar <destaque>). null = usa o texto de 'pergunta' em negrito."
+          },
+          "resposta": {
+            "type": "string",
+            "description": "Resposta deste item (6 a 100 palavras fora do LaTeX)."
+          },
+          "exemplo": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Exemplo conciso deste item, quando possível."
+          },
+          "imagem": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Descrição da imagem deste item (sem colchetes), começando por 'Imagem de/da/do ...'. null se não for útil."
+          }
+        }
+      }
+    },
+    "resposta": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Resposta dos Modelos 1, 3 e 4 (HTML permitido). Modelo 1: definição ou explicação (6 a 160 palavras; pode ser só fórmula). Modelo 3: demonstração curta, abrir com <b>Demonstração:</b> (7 a 160 palavras fora do LaTeX). Modelo 4: passos numerados com justificativa, abrir com <b>Dedução:</b> ou <b>Intuição:</b> (20 a 300 palavras fora do LaTeX). Modelo 2: null."
+    },
+    "observacao_resposta": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Observação curta sobre a resposta, quando necessário."
+    },
+    "exemplo": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Exemplo conciso, apenas no Modelo 1 (recomendado quando possível). Nos demais modelos, null."
+    },
+    "imagem_resposta": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Descrição da imagem da resposta (sem colchetes), começando por 'Imagem de/da/do ...'. Usar para compreensão visual (diagramas, esquemas geométricos) ou maior abstração; nunca para formulações puramente matemáticas. Modelo 2: null (usar itens[].imagem)."
+    }
+  }
+}

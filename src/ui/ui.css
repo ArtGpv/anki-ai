@@ -1,0 +1,48 @@
+/* Tema por variáveis CSS: funciona com Tailwind v3 ou v4 sem configurar nada. Padrão: escuro (como FrontBase.png). */
+:root,
+[data-tema='escuro'] {
+  color-scheme: dark;
+  --fundo: #474747; --topbar: #555555; --card: #555555; --card-2: #626262;
+  --modal: #44505a; --modal-topo: #38444d; --campo: #38444d; --sel: rgba(255, 255, 255, 0.07);
+  --texto: #f3f3f3; --texto-suave: #b9bfc4; --borda: #6e7780; --divisor: #707070;
+  --acento: #4da3ff; --botao: #0ea5e9; --botao-texto: #06202e;
+  --fab: #1b9bbf; --fab-amarelo: #e3c23a; --fab-texto: #ffffff;
+  --amarelo: #d6d08c; --verde: #8ed48e; --perigo: #ff9b9b; --perigo-fundo: rgba(255, 120, 120, 0.12); --aviso: #f2c14e;
+}
+[data-tema='claro'] {
+  color-scheme: light;
+  --fundo: #eef1f4; --topbar: #dfe4e9; --card: #ffffff; --card-2: #f3f5f7;
+  --modal: #ffffff; --modal-topo: #e5eaee; --campo: #f6f8fa; --sel: rgba(0, 0, 0, 0.06);
+  --texto: #1c2024; --texto-suave: #5b6670; --borda: #c4ccd3; --divisor: #d3d9de;
+  --acento: #0b63c5; --botao: #0284c7; --botao-texto: #ffffff;
+  --fab: #0e7c9c; --fab-amarelo: #c9a000; --fab-texto: #ffffff;
+  --amarelo: #c9a000; --verde: #2f9e44; --perigo: #c92a2a; --perigo-fundo: rgba(201, 42, 42, 0.08); --aviso: #b7791f;
+}
+html, body, #root { height: 100%; }
+body { margin: 0; background: var(--fundo); color: var(--texto); font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+:focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; }
+
+.rolagem { overflow-y: auto; overscroll-behavior: contain; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; min-height: 2.5rem; padding: 0.4rem 1rem;
+  border: 1px solid transparent; border-radius: 0.5rem; background: transparent; color: var(--texto); font-size: 0.875rem; font-weight: 500; cursor: pointer; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-primario { background: var(--botao); color: var(--botao-texto); }
+.btn-primario:hover:not(:disabled) { filter: brightness(1.1); }
+.btn-texto { color: var(--acento); }
+.btn-texto:hover:not(:disabled) { background: var(--sel); }
+.btn-contorno { border-color: var(--borda); }
+.btn-contorno:hover:not(:disabled) { background: var(--sel); }
+.btn-perigo { color: var(--perigo); border-color: var(--perigo); }
+.btn-pequeno { min-height: 2rem; padding: 0.2rem 0.65rem; font-size: 0.8rem; }
+.icone-btn { display: inline-flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; flex-shrink: 0;
+  border: 0; border-radius: 9999px; background: transparent; color: inherit; cursor: pointer; }
+.icone-btn:hover:not(:disabled) { background: var(--sel); }
+.icone-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.icone-btn-p { width: 2.25rem; height: 2.25rem; }
+.campo { width: 100%; box-sizing: border-box; padding: 0.55rem 0.75rem; border: 1px solid var(--borda); border-radius: 0.5rem;
+  background: var(--campo); color: var(--texto); font: inherit; font-size: 0.925rem; }
+.campo:focus { outline: 2px solid var(--acento); outline-offset: 0; }
+.campo:disabled { opacity: 0.55; }
+.rotulo { display: block; margin-bottom: 0.3rem; font-size: 0.8rem; color: var(--texto-suave); }
+.fab { position: fixed; right: 1.5rem; bottom: 1.5rem; z-index: 20; display: flex; align-items: center; justify-content: center;
+  width: 3.5rem; height: 3.5rem; border: 0; border-radius: 9999px; color: var(--fab-texto); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35); cursor: pointer; }

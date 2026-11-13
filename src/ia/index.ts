@@ -1,0 +1,13 @@
+export * from './config-ia';
+export * from './erros-ia';
+export * from './contador';
+export * from './tipos-ia';
+export * from './prompt';
+export * from './cliente-ia';
+export * from './cliente-tavily';
+export * from './geracao';
+export * from './fila';
+export * from './enviar';
+export * from './fabrica';
+export { default as especificacaoMd } from './especificacao-md';
+export * from './adaptador-python';

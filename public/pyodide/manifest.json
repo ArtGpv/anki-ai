@@ -1,0 +1,13 @@
+{
+  "versaoPyodide": "314.0.7",
+  "pacotesPyodide": [
+    "micropip",
+    "pyyaml"
+  ],
+  "wheels": [
+    "cached_property-2.0.1-py3-none-any.whl",
+    "chevron-0.14.0-py3-none-any.whl",
+    "frozendict-2.5.1-py3-none-any.whl",
+    "genanki-0.13.1-py3-none-any.whl"
+  ]
+}
