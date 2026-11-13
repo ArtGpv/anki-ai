@@ -114,12 +114,12 @@ export function Configuracoes() {
   }
 
   return (
-    <>
+    <div className="flex h-dvh flex-col overflow-hidden">
       <Topbar
         esquerda={<button type="button" className="icone-btn" aria-label="Voltar" onClick={() => ir('/')}><IconeVoltar /></button>}
         titulo="Configurações"
       />
-      <main className="rolagem min-h-0 flex-1 px-4 py-4 pb-10">
+      <main className="rolagem min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 pb-24">
         <div className="mx-auto max-w-xl space-y-4">
           <Secao titulo="Chave da API do Gemini">
             <p className="text-sm">
@@ -311,6 +311,6 @@ export function Configuracoes() {
           }}
         />
       )}
-    </>
+    </div>
   );
 }
