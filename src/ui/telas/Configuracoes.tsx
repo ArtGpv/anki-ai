@@ -166,7 +166,7 @@ export function Configuracoes() {
   }
 
   return (
-    <>
+    <div className="flex h-dvh flex-col overflow-hidden">
       <Topbar
         esquerda={<button type="button" className="icone-btn" aria-label="Voltar" onClick={() => ir('/')}><IconeVoltar /></button>}
         titulo="Configurações"
@@ -390,6 +390,6 @@ export function Configuracoes() {
           }}
         />
       )}
-    </>
+    </div>
   );
 }
