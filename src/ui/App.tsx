@@ -26,7 +26,8 @@ export default function App() {
   const grupo = /^\/grupo\/([^/]+)$/.exec(caminho);
   return (
     <ProvedorToast>
-      <div className="mx-auto flex h-dvh w-full max-w-6xl flex-col bg-[var(--fundo)] text-[var(--texto)]">
+      {/* .app-raiz (ui.css): coluna de altura 100dvh; só as áreas internas rolam. */}
+      <div className="app-raiz">
         {grupo ? <TelaGrupo key={grupo[1]} id={grupo[1]} /> : caminho === '/config' ? <Configuracoes /> : <Dashboard />}
       </div>
     </ProvedorToast>

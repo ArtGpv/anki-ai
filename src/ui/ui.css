@@ -19,10 +19,29 @@
   --amarelo: #c9a000; --verde: #2f9e44; --perigo: #c92a2a; --perigo-fundo: rgba(201, 42, 42, 0.08); --aviso: #b7791f;
 }
 html, body, #root { height: 100%; }
-body { margin: 0; background: var(--fundo); color: var(--texto); font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+/* Só as áreas internas (.rolagem / .tela-corpo) rolam; a página em si fica parada. */
+body { margin: 0; overflow: hidden; background: var(--fundo); color: var(--texto); font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
 :focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; }
 
-.rolagem { overflow-y: auto; overscroll-behavior: contain; }
+/* Casca do app: coluna com altura exata da tela visível (100dvh acompanha a barra do navegador no celular).
+   Declarada aqui, e não só em classes do Tailwind, para a rolagem não depender delas. */
+.app-raiz {
+  display: flex; flex-direction: column; width: 100%; max-width: 72rem; margin: 0 auto;
+  height: 100vh; height: 100dvh; overflow: hidden; background: var(--fundo); color: var(--texto);
+}
+
+/* Áreas roláveis. min-height: 0 é o que permite a um filho de flex encolher e rolar. */
+.rolagem {
+  min-height: 0; overflow-x: hidden; overflow-y: auto;
+  overscroll-behavior-y: contain; -webkit-overflow-scrolling: touch; touch-action: pan-y;
+}
+/* Corpo rolável de telas inteiras (Configurações): ocupa o que sobra da casca. */
+.tela-corpo {
+  flex: 1 1 0%; min-height: 0; overflow-x: hidden; overflow-y: auto;
+  overscroll-behavior-y: contain; -webkit-overflow-scrolling: touch; touch-action: pan-y;
+  scroll-padding-top: 0.5rem;
+}
+
 .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; min-height: 2.5rem; padding: 0.4rem 1rem;
   border: 1px solid transparent; border-radius: 0.5rem; background: transparent; color: var(--texto); font-size: 0.875rem; font-weight: 500; cursor: pointer; }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -46,3 +65,23 @@ body { margin: 0; background: var(--fundo); color: var(--texto); font-family: sy
 .rotulo { display: block; margin-bottom: 0.3rem; font-size: 0.8rem; color: var(--texto-suave); }
 .fab { position: fixed; right: 1.5rem; bottom: 1.5rem; z-index: 20; display: flex; align-items: center; justify-content: center;
   width: 3.5rem; height: 3.5rem; border: 0; border-radius: 9999px; color: var(--fab-texto); box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35); cursor: pointer; }
+
+/* ---------- Tela de Configurações ---------- */
+/* Barra de atalhos entre as áreas: fica fora da rolagem, sempre visível; no celular desliza na horizontal. */
+.cfg-nav { display: flex; gap: 0.5rem; flex-shrink: 0; overflow-x: auto; padding: 0.5rem 0.75rem;
+  background: var(--topbar); border-top: 1px solid var(--divisor); scrollbar-width: none; }
+.cfg-nav::-webkit-scrollbar { display: none; }
+.cfg-chip { flex-shrink: 0; min-height: 2.25rem; padding: 0.25rem 0.9rem; border: 1px solid var(--borda); border-radius: 9999px;
+  background: transparent; color: var(--texto); font-size: 0.85rem; cursor: pointer; }
+.cfg-chip:hover { background: var(--sel); }
+.cfg-chip[aria-current='true'] { background: var(--botao); border-color: var(--botao); color: var(--botao-texto); font-weight: 500; }
+
+.cfg-grupo { scroll-margin-top: 0.5rem; }
+.cfg-grupo + .cfg-grupo { margin-top: 2rem; }
+.cfg-grupo-titulo { margin: 0 0.25rem 0.15rem; font-size: 1.05rem; font-weight: 600; }
+.cfg-grupo-desc { margin: 0 0.25rem 0.75rem; font-size: 0.8rem; color: var(--texto-suave); }
+.cfg-grupo-corpo { display: flex; flex-direction: column; gap: 0.75rem; }
+
+.cfg-barra { height: 0.4rem; border-radius: 9999px; background: var(--sel); overflow: hidden; }
+.cfg-barra > span { display: block; height: 100%; border-radius: inherit; background: var(--acento); transition: width 0.2s; }
+.cfg-barra[data-alto='true'] > span { background: var(--aviso); }
